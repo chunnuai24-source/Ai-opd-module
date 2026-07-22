@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI OPD Module - Smart Patient Registration System</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <span class="logo-icon">🏥</span>
+                <span class="logo-text">AI OPD Module</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="navigateTo('dashboard')">Dashboard</a></li>
+                <li><a href="#" onclick="navigateTo('voice-register')">Voice Register</a></li>
+                <li><a href="#" onclick="navigateTo('form-register')">Form Register</a></li>
+                <li><a href="#" onclick="navigateTo('emergency')">Emergency</a></li>
+                <li><a href="#" onclick="navigateTo('appointments')">Appointments</a></li>
+                <li><a href="#" onclick="navigateTo('search-patient')">Search Patient</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="page active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>Welcome to AI-Powered OPD Management</h1>
+                    <p>Revolutionary patient registration with voice input, emergency handling, and intelligent doctor assignment</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-lg" onclick="navigateTo('voice-register')">
+                            🎤 Voice Registration
+                        </button>
+                        <button class="btn btn-secondary btn-lg" onclick="navigateTo('form-register')">
+                            📝 Form Registration
+                        </button>
+                        <button class="btn btn-danger btn-lg" onclick="navigateTo('emergency')">
+                            🚨 Emergency
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-container">
+                <h2>Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎤</div>
+                        <h3>Voice Registration</h3>
+                        <p>Register by speaking naturally. AI transcribes and extracts your information automatically.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Emergency Mode</h3>
+                        <p>Quick doctor assignment for urgent cases with minimal information required.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🆔</div>
+                        <h3>Unique UHID</h3>
+                        <p>Get a unique health ID automatically generated for your records.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <h3>Easy Scheduling</h3>
+                        <p>Schedule appointments with available doctors in just a few clicks.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👨‍⚕️</div>
+                        <h3>Doctor Assignment</h3>
+                        <p>Intelligent assignment based on availability and specialization.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Patient Records</h3>
+                        <p>Complete patient history and medical records management system.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalPatients">0</div>
+                    <div class="stat-label">Total Patients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDoctors">0</div>
+                    <div class="stat-label">Available Doctors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAppointments">0</div>
+                    <div class="stat-label">Appointments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Service Hours</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Voice Registration Page -->
+        <section id="voice-register" class="page">
+            <div class="page-header">
+                <h1>🎤 Voice Registration</h1>
+                <p>Speak your details naturally and let AI do the rest</p>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Record Your Information</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="voice-section">
+                            <p class="instruction">Click the button below to start speaking. Tell us your name, age, gender, phone number, and any other relevant information.</p>
+                            
+                            <div class="recording-controls">
+                                <button id="voiceStartBtn" class="btn btn-success btn-lg" onclick="startVoiceRecording()">
+                                    🎤 Start Recording
+                                </button>
+                                <button id="voiceStopBtn" class="btn btn-warning btn-lg" onclick="stopVoiceRecording()" style="display: none;">
+                                    ⏹️ Stop Recording
+                                </button>
+                            </div>
+
+                            <div id="voiceStatus" class="status-box" style="display: none;"></div>
+                            <div id="voiceTranscript" class="transcript-box" style="display: none;"></div>
+                            <div id="voiceExtracted" class="extracted-box" style="display: none;"></div>
+
+                            <div class="action-buttons">
+                                <button class="btn btn-primary" onclick="submitVoiceRegistration()">✓ Submit</button>
+                                <button class="btn btn-secondary" onclick="resetVoiceForm()">🔄 Reset</button>
+                            </div>
+
+                            <div id="voiceResult" class="result-box" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Registration Page -->
+        <section id="form-register" class="page">
+            <div class="page-header">
+                <h1>📝 Form Registration</h1>
+                <p>Fill out the form to register as a patient</p>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="registrationForm" class="registration-form">
+                            <!-- Personal Information Section -->
+                            <div class="form-section">
+                                <h3>Personal Information</h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name *</label>
+                                        <input type="text" id="firstName" required placeholder="Enter your first name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name</label>
+                                        <input type="text" id="lastName" placeholder="Enter your last name">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="age">Age *</label>
+                                        <input type="number" id="age" min="1" max="150" required placeholder="Enter your age">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gender">Gender *</label>
+                                        <select id="gender" required>
+                                            <option value="">Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bloodGroup">Blood Group</label>
+                                        <select id="bloodGroup">
+                                            <option value="">Select Blood Group</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contact Information Section -->
+                            <div class="form-section">
+                                <h3>Contact Information</h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="phoneNumber">Phone Number *</label>
+                                        <input type="tel" id="phoneNumber" required placeholder="10-digit phone number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" placeholder="Enter your email">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="maritalStatus">Marital Status</label>
+                                        <select id="maritalStatus">
+                                            <option value="">Select Status</option>
+                                            <option value="Single">Single</option>
+                                            <option value="Married">Married</option>
+                                            <option value="Divorced">Divorced</option>
+                                            <option value="Widowed">Widowed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Address Section -->
+                            <div class="form-section">
+                                <h3>Address</h3>
+                                
+                                <div class="form-group full-width">
+                                    <label for="address">Address</label>
+                                    <textarea id="address" rows="3" placeholder="Enter your full address"></textarea>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" id="city" placeholder="Enter city">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="state">State</label>
+                                        <input type="text" id="state" placeholder="Enter state">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zipCode">Zip Code</label>
+                                        <input type="text" id="zipCode" placeholder="Enter zip code">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Emergency Contact Section -->
+                            <div class="form-section">
+                                <h3>Emergency Contact</h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="emergencyName">Emergency Contact Name</label>
+                                        <input type="text" id="emergencyName" placeholder="Enter emergency contact name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="emergencyPhone">Emergency Contact Phone</label>
+                                        <input type="tel" id="emergencyPhone" placeholder="Enter emergency contact phone">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="form-buttons">
+                                <button type="submit" class="btn btn-primary btn-lg">✓ Register</button>
+                                <button type="reset" class="btn btn-secondary btn-lg">🔄 Clear Form</button>
+                            </div>
+
+                            <div id="formResult" style="display: none;"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Page -->
+        <section id="emergency" class="page">
+            <div class="page-header">
+                <h1>🚨 Emergency Registration</h1>
+                <p>Immediate doctor assignment for critical situations</p>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="alert alert-danger">
+                    <strong>⚠️ EMERGENCY MODE</strong><br>
+                    Provide minimal information to get immediate doctor assistance. Complete registration after consultation.
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <form id="emergencyForm" class="emergency-form">
+                            <div class="form-section">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="emergencyPhone2">Phone Number *</label>
+                                        <input type="tel" id="emergencyPhone2" required placeholder="10-digit phone number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="emergencyPatientName">Patient Name (Optional)</label>
+                                        <input type="text" id="emergencyPatientName" placeholder="Enter patient name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="emergencyReason">Emergency Reason *</label>
+                                    <textarea id="emergencyReason" rows="4" required placeholder="Describe the emergency situation..."></textarea>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn btn-danger btn-lg">🚑 Call Emergency</button>
+                                    <button type="reset" class="btn btn-secondary btn-lg">Clear</button>
+                                </div>
+
+                                <div id="emergencyResult" style="display: none;"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appointments Page -->
+        <section id="appointments" class="page">
+            <div class="page-header">
+                <h1>📅 Schedule Appointment</h1>
+                <p>Book your appointment with available doctors</p>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="appointmentForm" class="appointment-form">
+                            <div class="form-section">
+                                <h3>Your Information</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="appointmentUHID">Your UHID *</label>
+                                        <input type="text" id="appointmentUHID" required placeholder="Enter your UHID (e.g., OPD2A5K9M3)">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-info" onclick="fetchAvailableDoctors()">Load Doctors</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Appointment Details</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="doctorSelect">Select Doctor *</label>
+                                        <select id="doctorSelect" required>
+                                            <option value="">Choose a doctor...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="appointmentDate">Date *</label>
+                                        <input type="date" id="appointmentDate" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="appointmentTime">Time *</label>
+                                        <select id="appointmentTime" required>
+                                            <option value="">Select time...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="appointmentReason">Reason for Visit *</label>
+                                        <input type="text" id="appointmentReason" required placeholder="e.g., Routine checkup">
+                                    </div>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn btn-primary btn-lg">✓ Schedule</button>
+                                    <button type="reset" class="btn btn-secondary btn-lg">Clear</button>
+                                </div>
+
+                                <div id="appointmentResult" style="display: none;"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Patient Page -->
+        <section id="search-patient" class="page">
+            <div class="page-header">
+                <h1>👤 Search Patient</h1>
+                <p>View your patient profile and medical records</p>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="search-section">
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="searchUHID">Enter UHID *</label>
+                                    <div class="search-box">
+                                        <input type="text" id="searchUHID" placeholder="Enter your UHID (e.g., OPD2A5K9M3)">
+                                        <button type="button" class="btn btn-primary" onclick="searchPatient()">🔍 Search</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="patientProfile" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 AI OPD Module | Smart Patient Registration System | All Rights Reserved</p>
+        <p>Built with ❤️ for better healthcare</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
